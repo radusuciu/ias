@@ -35,7 +35,7 @@ def filter_20s(ratios: RatioList, ratio_cutoff=4) -> List[bool]:
     min_below_cutoff = min(ratios) < ratio_cutoff
 
     if not only_zeros_and_20s and min_below_cutoff:
-        return [r == 20 for r in ratios]
+        return [r != 20 for r in ratios]
     else:
         return no_filter
 
