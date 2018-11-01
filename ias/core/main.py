@@ -65,10 +65,11 @@ def apply_experiment_filters(analysis, exclude, experiment_filters):
 def apply_experiment_filter(grouped_data, filter_obj):
     filtered_out = []
     for g in grouped_data:
-        filtered_out.extend([
-            y['id'] for y in
-            itertools.compress(g, filter_obj.fn([x.get(filter_obj.requires) for x in g]))
-        ])
+        # filters return a list of booleans
+        # True = keep, False = filter out
+        filter_results = filter_obj.fn([x.get(filter_obj.requires) for x in g])
+        ids_to_filter_out = [y[1]['id'] for y in zip(filter_results, g) if not y[0]]
+        filtered_out.extend(ids_to_filter_out)
     return filtered_out
 
 def apply_individual_filters(analysis, individual_filters):
